@@ -184,7 +184,7 @@ function getRollupOutputOptions(
       freeze: !isProduction,
       interop: false,
       name: globalName,
-      sourcemap: false,
+      sourcemap: true,
     }
   );
 }
@@ -360,11 +360,11 @@ function getPlugins(
     // Compile to ES5.
     babel(getBabelConfig(updateBabelOptions, bundleType)),
     // Remove 'use strict' from individual source files.
-    {
-      transform(source) {
-        return source.replace(/['"]use strict["']/g, '');
-      },
-    },
+    // {
+    //   transform(source) {
+    //     return source.replace(/['"]use strict["']/g, '');
+    //   },
+    // },
     // Turn __DEV__ and process.env checks into constants.
     replace({
       __DEV__: isProduction ? 'false' : 'true',
@@ -391,17 +391,17 @@ function getPlugins(
     // Add the whitespace back if necessary.
     shouldStayReadable && prettier({parser: 'babylon'}),
     // License and haste headers, top-level `if` blocks.
-    {
-      transformBundle(source) {
-        return Wrappers.wrapBundle(
-          source,
-          bundleType,
-          globalName,
-          filename,
-          moduleType
-        );
-      },
-    },
+    // {
+    //   transformBundle(source) {
+    //     return Wrappers.wrapBundle(
+    //       source,
+    //       bundleType,
+    //       globalName,
+    //       filename,
+    //       moduleType
+    //     );
+    //   },
+    // },
     // Record bundle size.
     sizes({
       getSize: (size, gzip) => {
